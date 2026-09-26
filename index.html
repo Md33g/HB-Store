@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MD Store • Premium Apps</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>HB Store • Premium Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
-            --bg: #030408;
-            --surface: #0a0c14;
-            --surface-hover: #101320;
-            --border: rgba(0, 242, 254, 0.12);
-            --border-hover: rgba(0, 242, 254, 0.4);
-            --accent: #00f2fe;
-            --accent-glow: rgba(0, 242, 254, 0.15);
-            --text-main: #f8fafc;
-            --text-muted: #64748b;
+            --bg: #040405;
+            --bg-soft: #0a0a0c;
+            --surface: #0e0e11;
+            --surface-hover: #15151a;
+            --border: rgba(255, 45, 70, 0.14);
+            --border-hover: rgba(255, 45, 70, 0.55);
+            --accent: #ff2d46;
+            --accent-2: #ff6a3d;
+            --accent-deep: #b3001b;
+            --accent-glow: rgba(255, 45, 70, 0.18);
+            --accent-glow-strong: rgba(255, 45, 70, 0.35);
+            --text-main: #f7f7f8;
+            --text-muted: #6b6b76;
         }
 
         * {
@@ -25,7 +29,10 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg);
@@ -34,197 +41,510 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background-image: 
-                radial-gradient(circle at 50% -20%, rgba(0, 242, 254, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 50% 120%, rgba(0, 114, 255, 0.05) 0%, transparent 50%);
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* ---------- Ambient background ---------- */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                radial-gradient(ellipse 70% 45% at 50% -15%, rgba(255, 45, 70, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 50% 115%, rgba(179, 0, 27, 0.16) 0%, transparent 65%);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+            background-image:
+                linear-gradient(rgba(255, 45, 70, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 45, 70, 0.045) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: radial-gradient(ellipse 80% 65% at 50% 40%, #000 0%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 40%, #000 0%, transparent 85%);
+        }
+
+        /* ---------- Header ---------- */
         header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(10, 12, 20, 0.7);
-            backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 20px;
+            background: rgba(8, 8, 10, 0.72);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            left: 0; right: 0; bottom: -1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.6;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin: 0 auto;
         }
 
         .logo-wrapper {
-            font-size: 1.5rem;
-            filter: drop-shadow(0 0 10px var(--accent-glow));
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            font-size: 1.3rem;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #1a0509, #0b0b0e);
+            border: 1px solid var(--border-hover);
+            box-shadow: 0 0 18px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
         }
 
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
+        .brand-text h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        .brand-text span {
+            display: block;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ---------- Layout ---------- */
         .container {
-            max-width: 560px;
+            position: relative;
+            z-index: 1;
+            max-width: 580px;
             width: 100%;
             margin: 0 auto;
-            padding: 24px 16px;
+            padding: 28px 16px 40px;
             flex: 1;
         }
 
-        .section-title {
-            font-size: 0.75rem;
+        /* ---------- Hero strip ---------- */
+        .hero {
+            position: relative;
+            border-radius: 16px;
+            padding: 20px 20px 22px;
+            margin-bottom: 28px;
+            overflow: hidden;
+            background:
+                linear-gradient(150deg, rgba(255, 45, 70, 0.10) 0%, rgba(14, 14, 17, 0.9) 55%),
+                var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 45px -22px rgba(255, 45, 70, 0.55);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -60%;
+            right: -20%;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, var(--accent-glow-strong) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        .hero p {
+            font-size: 0.78rem;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            line-height: 1.55;
+            max-width: 90%;
+        }
+
+        .hero-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.68rem;
             font-weight: 600;
+            letter-spacing: 0.4px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            color: #ffb3be;
+            background: rgba(255, 45, 70, 0.08);
+            border: 1px solid rgba(255, 45, 70, 0.22);
+            border-radius: 999px;
+            padding: 5px 11px;
+        }
+
+        .pill i { font-size: 0.62rem; }
+
+        /* ---------- Section title ---------- */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border-hover), transparent);
+        }
+
+        .section-title i { color: var(--accent); font-size: 0.7rem; }
+
+        /* ---------- App card ---------- */
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .app-card {
-            background-color: var(--surface);
+            position: relative;
+            background: linear-gradient(160deg, var(--surface) 0%, #0a0a0d 100%);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 14px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 14px;
+            overflow: hidden;
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.28s ease,
+                        box-shadow 0.28s ease,
+                        background 0.28s ease;
+        }
+
+        /* red left edge accent */
+        .app-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 18%;
+            bottom: 18%;
+            width: 2px;
+            border-radius: 0 2px 2px 0;
+            background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+            opacity: 0.55;
+            transition: opacity 0.28s ease, top 0.28s ease, bottom 0.28s ease;
+        }
+
+        /* shine sweep */
+        .app-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.045), transparent);
+            transition: left 0.65s ease;
+            pointer-events: none;
         }
 
         .app-card:hover {
-            background-color: var(--surface-hover);
+            background: linear-gradient(160deg, var(--surface-hover) 0%, #0d0d11 100%);
             border-color: var(--border-hover);
-            box-shadow: 0 8px 24px var(--accent-glow);
-            transform: translateY(-2px);
+            box-shadow: 0 14px 34px -14px var(--accent-glow-strong),
+                        0 0 0 1px rgba(255, 45, 70, 0.08);
+            transform: translateY(-3px);
         }
+
+        .app-card:hover::before { opacity: 1; top: 8%; bottom: 8%; }
+        .app-card:hover::after { left: 130%; }
 
         .app-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 13px;
             min-width: 0;
+        }
+
+        .icon-frame {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 13px;
+            padding: 1px;
+            flex-shrink: 0;
+            background: linear-gradient(145deg, rgba(255, 45, 70, 0.5), rgba(255, 45, 70, 0.05));
+            transition: box-shadow 0.28s ease, background 0.28s ease;
+        }
+
+        .app-card:hover .icon-frame {
+            background: linear-gradient(145deg, var(--accent), var(--accent-2));
+            box-shadow: 0 0 18px var(--accent-glow-strong);
         }
 
         .app-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
             object-fit: cover;
-            border: 1px solid var(--border);
-            background: #05050a;
-            flex-shrink: 0;
+            display: block;
+            background: #07070a;
         }
 
-        .app-details {
-            min-width: 0;
-        }
+        .app-details { min-width: 0; }
 
         .app-details h3 {
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            letter-spacing: 0.1px;
         }
 
-        .app-details p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, #00f2fe 0%, #0072ff 100%);
-            color: #030408;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.825rem;
+        .meta {
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 114, 255, 0.25);
+            gap: 7px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.7;
+        }
+
+        .tag {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(255, 45, 70, 0.09);
+            border: 1px solid rgba(255, 45, 70, 0.2);
+            padding: 2px 7px;
+            border-radius: 5px;
+        }
+
+        /* ---------- Download button ---------- */
+        .download-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+            color: #fff;
+            padding: 9px 16px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.78rem;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
             white-space: nowrap;
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 6px 18px -6px rgba(255, 45, 70, 0.75),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s ease;
+        }
+
+        .download-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
         }
 
         .download-btn:hover {
-            opacity: 0.95;
-            transform: scale(1.02);
-            box-shadow: 0 4px 16px rgba(0, 242, 254, 0.35);
+            transform: translateY(-1px) scale(1.035);
+            filter: brightness(1.08);
+            box-shadow: 0 8px 24px -6px rgba(255, 45, 70, 0.9),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
+        .download-btn:hover::after { left: 130%; }
+        .download-btn:active { transform: scale(0.98); }
+
+        /* ---------- Footer ---------- */
         footer {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            padding: 16px;
+            padding: 18px 16px;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
-            font-size: 0.75rem;
-            background: rgba(10, 12, 20, 0.4);
-            letter-spacing: 0.3px;
+            font-size: 0.72rem;
+            background: rgba(8, 8, 10, 0.6);
+            letter-spacing: 0.4px;
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            left: 0; right: 0; top: -1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.45;
         }
 
         footer span {
             color: var(--accent);
-            font-weight: 600;
+            font-weight: 700;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 420px) {
+            .container { padding: 22px 13px 34px; }
+            .hero { padding: 18px; }
+            .hero p { max-width: 100%; }
+            .app-card { padding: 13px; gap: 11px; }
+            .icon-frame { width: 46px; height: 46px; }
+            .download-btn { padding: 9px 13px; font-size: 0.74rem; }
+            .download-btn span { display: none; }
+            .download-btn i { font-size: 0.85rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <span class="logo-wrapper">🐺</span>
-        <h1>MD Store</h1>
+        <div class="brand">
+            <span class="logo-wrapper">🐰</span>
+            <div class="brand-text">
+                <h1>HB Store</h1>
+                <span>Premium Apps</span>
+            </div>
+        </div>
     </header>
 
     <div class="container">
-        <div class="section-title">Verified Releases</div>
-        
-        <div class="app-card">
-            <div class="app-info">
-                <img src="assets/hb-calc-icon.png" alt="HB Calc" class="app-icon">
-                <div class="app-details">
-                    <h3>HB Calc</h3>
-                    <p>v1.0 • APK</p>
-                </div>
+
+        <div class="hero">
+            <h2>Curated &amp; Verified Releases</h2>
+            <p>Hand-picked Android builds, tested and signed. Fast downloads, no bloat, no nonsense.</p>
+            <div class="hero-pills">
+                <span class="pill"><i class="fa-solid fa-shield-halved"></i> Verified</span>
+                <span class="pill"><i class="fa-solid fa-bolt"></i> Fast CDN</span>
+                <span class="pill"><i class="fa-solid fa-infinity"></i> Free</span>
             </div>
-            <a href="https://github.com/Md33g/MD-Store/releases/download/Max/HB_Calc_2.apk" class="download-btn" target="_blank">
-                <i class="fa-solid fa-download"></i> Download
-            </a>
         </div>
 
-        <div class="app-card">
-            <div class="app-info">
-                <img src="assets/hb-colors-icon.png" alt="HB Calc" class="app-icon">
-                <div class="app-details">
-                    <h3>HB Color's</h3>
-                    <p>v1.0 • APK</p>
-                </div>
-            </div>
-            <a href="https://github.com/Md33g/MD-Store/releases/download/colors/HB_Colors.apk" class="download-btn" target="_blank">
-                <i class="fa-solid fa-download"></i> Download
-            </a>
+        <div class="section-title">
+            <i class="fa-solid fa-fire"></i> Available Now
         </div>
-        
-        <div class="app-card">
-            <div class="app-info">
-                <img src="assets/unknown.png" alt="?" class="app-icon">
-                <div class="app-details">
-                    <h3>?</h3>
-                    <p>v? • APK</p>
+
+        <div class="app-list">
+
+            <div class="app-card">
+                <div class="app-info">
+                    <div class="icon-frame">
+                        <img src="assets/hb-calc-icon.png" alt="HB Calc" class="app-icon">
+                    </div>
+                    <div class="app-details">
+                        <h3>HB Calc</h3>
+                        <div class="meta">
+                            <span class="tag">v1.0</span>
+                            <span class="dot"></span>
+                            <span>APK</span>
+                        </div>
+                    </div>
                 </div>
+                <a href="https://github.com/Md33g/MD-Store/releases/download/Max/HB_Calc_2.apk" class="download-btn" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-download"></i> <span>Download</span>
+                </a>
             </div>
-            <a href="?????" class="download-btn" target="_blank">
-                <i class="fa-solid fa-download"></i> Download
-            </a>
+
+            <div class="app-card">
+                <div class="app-info">
+                    <div class="icon-frame">
+                        <img src="assets/hb-colors-icon.png" alt="HB Color's" class="app-icon">
+                    </div>
+                    <div class="app-details">
+                        <h3>HB Color's</h3>
+                        <div class="meta">
+                            <span class="tag">v1.0</span>
+                            <span class="dot"></span>
+                            <span>APK</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://github.com/Md33g/MD-Store/releases/download/colors/HB_Colors.apk" class="download-btn" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-download"></i> <span>Download</span>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <div class="app-info">
+                    <div class="icon-frame">
+                        <img src="assets/unknown.png" alt="Coming soon" class="app-icon">
+                    </div>
+                    <div class="app-details">
+                        <h3>?</h3>
+                        <div class="meta">
+                            <span class="tag">v?</span>
+                            <span class="dot"></span>
+                            <span>APK</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-download"></i> <span>Download</span>
+                </a>
+            </div>
+
         </div>
     </div>
 
