@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HB Store • Premium Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #040405;
+            --surface: #0e0e11;
+            --surface-hover: #16161b;
+            --border: rgba(255, 45, 70, 0.14);
+            --border-hover: rgba(255, 45, 70, 0.6);
+            --accent: #ff2d46;
+            --accent-2: #ff6a3d;
+            --accent-deep: #b3001b;
+            --accent-glow: rgba(255, 45, 70, 0.18);
+            --accent-glow-strong: rgba(255, 45, 70, 0.4);
+            --blue: #3b82f6;
+            --blue-glow: rgba(59, 130, 246, 0.45);
+            --text-main: #f7f7f8;
+            --text-muted: #6b6b76;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ---------- Ambient background ---------- */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                radial-gradient(ellipse 70% 45% at 50% -15%, rgba(255, 45, 70, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 50% 115%, rgba(179, 0, 27, 0.16) 0%, transparent 65%);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+            background-image:
+                linear-gradient(rgba(255, 45, 70, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 45, 70, 0.045) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: radial-gradient(ellipse 80% 65% at 50% 40%, #000 0%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 40%, #000 0%, transparent 85%);
+        }
+
+        /* ---------- Header ---------- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px;
+            background: rgba(8, 8, 10, 0.72);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            left: 0; right: 0; bottom: -1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.6;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .logo-wrapper {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            font-size: 1.35rem;
+            border-radius: 13px;
+            background: linear-gradient(145deg, #1a0509, #0b0b0e);
+            border: 1px solid var(--border-hover);
+            box-shadow: 0 0 20px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .brand-text h1 {
+            font-size: 1.18rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text span {
+            display: block;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ---------- About button ---------- */
+        .about-btn {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 15px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: #ffd6dc;
+            background: linear-gradient(145deg, rgba(255, 45, 70, 0.16), rgba(255, 45, 70, 0.04));
+            border: 1px solid rgba(255, 45, 70, 0.35);
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px -10px rgba(255, 45, 70, 0.9),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            transition: all 0.25s ease;
+        }
+
+        .about-btn i { color: var(--accent); font-size: 0.78rem; }
+
+        .about-btn:hover {
+            color: #ffffff;
+            border-color: var(--accent);
+            background: linear-gradient(145deg, rgba(255, 45, 70, 0.28), rgba(255, 45, 70, 0.08));
+            box-shadow: 0 8px 22px -8px var(--accent-glow-strong),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%) scale(1.04);
+        }
+
+        .about-btn:active { transform: translateY(-50%) scale(0.97); }
+
+        /* ---------- Layout ---------- */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 980px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 34px 20px 48px;
+            flex: 1;
+        }
+
+        /* ---------- Section title ---------- */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border-hover), transparent);
+        }
+
+        .section-title i { color: var(--accent); font-size: 0.7rem; }
+
+        /* ---------- App grid: ALWAYS 3 per row ---------- */
+        .app-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        /* ---------- Premium vertical app card ---------- */
+        .app-card {
+            position: relative;
+            border-radius: 20px;
+            padding: 26px 16px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 15px;
+            overflow: hidden;
+            isolation: isolate;
+
+            background:
+                linear-gradient(155deg, #131318 0%, #0a0a0d 55%, #100a0c 100%);
+            border: 1px solid rgba(255, 45, 70, 0.15);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.015),
+                0 18px 40px -30px rgba(0, 0, 0, 0.95);
+
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        .card-glow {
+            position: absolute;
+            inset: -40%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 20%, var(--accent-glow-strong) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .app-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 18%;
+            right: 18%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 45, 70, 0.7), transparent);
+            opacity: 0.5;
+            transition: opacity 0.3s ease, left 0.3s ease, right 0.3s ease;
+        }
+
+        .app-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 42%;
+            height: 2px;
+            border-radius: 3px 3px 0 0;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.35;
+            transition: width 0.35s ease, opacity 0.35s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 30px 55px -28px var(--accent-glow-strong),
+                0 0 0 1px rgba(255, 45, 70, 0.1);
+        }
+
+        .app-card:hover .card-glow { opacity: 1; }
+        .app-card:hover::before { opacity: 1; left: 8%; right: 8%; }
+        .app-card:hover::after { width: 78%; opacity: 1; }
+
+        /* ---------- Icon ---------- */
+        .icon-frame {
+            position: relative;
+            width: clamp(58px, 9vw, 78px);
+            height: clamp(58px, 9vw, 78px);
+            border-radius: 22px;
+            padding: 1.5px;
+            flex-shrink: 0;
+            background: linear-gradient(145deg,
+                        rgba(255, 45, 70, 0.7) 0%,
+                        rgba(255, 45, 70, 0.12) 50%,
+                        rgba(255, 255, 255, 0.06) 100%);
+            box-shadow: 0 14px 28px -14px rgba(255, 45, 70, 0.75);
+            transition: box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
+        }
+
+        .app-card:hover .icon-frame {
+            background: linear-gradient(145deg, var(--accent) 0%, var(--accent-2) 100%);
+            box-shadow: 0 0 26px var(--accent-glow-strong), 0 14px 30px -14px rgba(255, 45, 70, 0.95);
+            transform: scale(1.05);
+        }
+
+        .app-icon {
+            width: 100%;
+            height: 100%;
+            border-radius: 20.5px;
+            object-fit: cover;
+            display: block;
+            background: #07070a;
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 0.62rem;
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            border: 2.5px solid #0a0a0d;
+            box-shadow: 0 0 12px rgba(255, 45, 70, 0.8);
+        }
+
+        /* ---------- Details ---------- */
+        .app-details {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .app-details h3 {
+            font-size: clamp(0.82rem, 1.5vw, 1rem);
+            font-weight: 700;
+            letter-spacing: 0.1px;
+            color: var(--text-main);
+            margin-bottom: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: clamp(0.58rem, 1.1vw, 0.72rem);
+            color: var(--text-muted);
+            font-weight: 500;
+            flex-wrap: nowrap;
+        }
+
+        .meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.75;
+            flex-shrink: 0;
+        }
+
+        /* device tag (left of version) */
+        .device {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: clamp(0.54rem, 1vw, 0.62rem);
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: #a5c8ff;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.22);
+            padding: 3px 7px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .device i { font-size: 0.7em; }
+
+        .tag {
+            font-size: clamp(0.54rem, 1vw, 0.62rem);
+            font-weight: 700;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: #ffb3be;
+            background: rgba(255, 45, 70, 0.1);
+            border: 1px solid rgba(255, 45, 70, 0.25);
+            padding: 3px 7px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        /* ---------- Download button ---------- */
+        .download-btn {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+            color: #fff;
+            padding: 11px 14px;
+            border-radius: 11px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: clamp(0.68rem, 1.2vw, 0.78rem);
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            margin-top: auto;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow:
+                0 8px 20px -8px rgba(255, 45, 70, 0.85),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s ease;
+        }
+
+        .download-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-1px) scale(1.03);
+            filter: brightness(1.1);
+            box-shadow:
+                0 10px 26px -8px rgba(255, 45, 70, 0.95),
+                inset 0 1px 0 rgba(255, 255, 255, 0.28);
+        }
+
+        .download-btn:hover::after { left: 130%; }
+        .download-btn:active { transform: scale(0.97); }
+
+        /* ---------- About modal ---------- */
+        .about-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(4, 4, 5, 0.78);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .about-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .about-content {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px 36px;
+            text-align: center;
+            border-radius: 22px;
+            background:
+                linear-gradient(155deg, #15151b 0%, #0a0a0d 60%, #13090c 100%);
+            border: 1px solid rgba(255, 45, 70, 0.35);
+            box-shadow:
+                0 40px 90px -40px rgba(255, 45, 70, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transform: translateY(14px) scale(0.97);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-modal.active .about-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .about-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            font-size: 1.25rem;
+            line-height: 1;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+            border-color: rgba(255, 45, 70, 0.4);
+            background: rgba(255, 45, 70, 0.08);
+        }
+
+        .about-heart {
+            width: 74px;
+            height: 74px;
+            margin: 0 auto 18px;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            border-radius: 22px;
+            background: radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.04) 70%);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            box-shadow: 0 0 30px -6px var(--blue-glow);
+            animation: heartPulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px -6px var(--blue-glow); }
+            50%      { transform: scale(1.06); box-shadow: 0 0 42px -4px var(--blue-glow); }
+        }
+
+        .about-content h2 {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .about-content .made-line {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: 0.2px;
+            margin-bottom: 6px;
+        }
+
+        .about-content .made-line .blue-heart {
+            display: inline-block;
+            animation: bounceHeart 1.6s ease-in-out infinite;
+        }
+
+        @keyframes bounceHeart {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-3px); }
+        }
+
+        .about-content .author {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            background: linear-gradient(135deg, #ffffff 20%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 4px;
+        }
+
+        .about-content .divider {
+            width: 60px;
+            height: 2px;
+            margin: 18px auto 0;
+            border-radius: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.7;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 640px) {
+            .container { padding: 24px 14px 38px; }
+            .app-list { gap: 10px; }
+            .app-card { padding: 18px 10px 14px; border-radius: 16px; gap: 11px; }
+            .icon-frame { border-radius: 16px; }
+            .app-icon { border-radius: 14.5px; }
+            .verified-badge { width: 19px; height: 19px; font-size: 0.5rem; border-width: 2px; bottom: -4px; right: -4px; }
+            .download-btn { padding: 9px 8px; border-radius: 9px; gap: 5px; }
+            .about-btn { padding: 8px 11px; font-size: 0.7rem; right: 12px; }
+            .about-btn span { display: none; }
+            .about-btn i { font-size: 0.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            .meta { gap: 4px; }
+            .device, .tag { padding: 2px 5px; font-size: 0.5rem; }
+            .device i { font-size: 0.65em; }
+        }
+
+        @media (max-width: 400px) {
+            .container { padding: 20px 10px 34px; }
+            .app-list { gap: 8px; }
+            .app-card { padding: 16px 8px 12px; gap: 9px; }
+            .brand-text span { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <span class="logo-wrapper">🐰</span>
+            <div class="brand-text">
+                <h1>HB Store</h1>
+                <span>Premium Apps</span>
+            </div>
+        </div>
+
+        <button class="about-btn" onclick="openAbout()" aria-label="About">
+            <i class="fa-solid fa-circle-info"></i> <span>About</span>
+        </button>
+    </header>
+
+    <div class="container">
+
+        <div class="section-title">
+            <i class="fa-solid fa-fire"></i> Available Now
+        </div>
+
+        <div class="app-list">
+
+            <!-- App 1: HB Calc -->
+            <div class="app-card">
+                <span class="card-glow"></span>
+                <div class="icon-frame">
+                    <img src="assets/hb-calc-icon.png" alt="HB Calc" class="app-icon">
+                    <span class="verified-badge"><i class="fa-solid fa-check"></i></span>
+                </div>
+                <div class="app-details">
+                    <h3>HB Calc</h3>
+                    <div class="meta">
+                        <span class="device"><i class="fa-solid fa-mobile-screen"></i> Phone</span>
+                        <span class="dot"></span>
+                        <span class="tag">v1.0</span>
+                        <span class="dot"></span>
+                        <span>APK</span>
+                    </div>
+                </div>
+                <a href="https://github.com/Md33g/MD-Store/releases/download/Max/HB_Calc_2.apk" class="download-btn" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-download"></i> <span>Download</span>
+                </a>
+            </div>
+
+            <!-- App 2: HB Color's -->
+            <div class="app-card">
+                <span class="card-glow"></span>
+                <div class="icon-frame">
+                    <img src="assets/hb-colors-icon.png" alt="HB Color's" class="app-icon">
+                    <span class="verified-badge"><i class="fa-solid fa-check"></i></span>
+                </div>
+                <div class="app-details">
+                    <h3>HB Color's</h3>
+                    <div class="meta">
+                        <span class="device"><i class="fa-solid fa-mobile-screen"></i> Phone</span>
+                        <span class="dot"></span>
+                        <span class="tag">v1.0</span>
+                        <span class="dot"></span>
+                        <span>APK</span>
+                    </div>
+                </div>
+                <a href="https://github.com/Md33g/MD-Store/releases/download/colors/HB_Colors.apk" class="download-btn" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-download"></i> <span>Download</span>
+                </a>
+            </div>
+
+            <!-- App 3: Placeholder -->
+            <div class="app-card">
+                <span class="card-glow"></span>
+                <div class="icon-frame">
+                    <img src="assets/unknown.png" alt="Coming soon" class="app-icon">
+                    <span class="verified-badge"><i class="fa-solid fa-check"></i></span>
+                </div>
+                <div class="app-details">
+                    <h3>?</h3>
+                    <div class="meta">
+                        <span class="device"><i class="fa-solid fa-tablet"></i> Tablet</span>
+                        <span class="dot"></span>
+                        <span class="tag">v?</span>
+                        <span class="dot"></span>
+                        <span>APK</span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-download"></i> <span>Download</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="about-modal" id="aboutModal" onclick="if(event.target===this) closeAbout()">
+        <div class="about-content">
+            <button class="close-btn" onclick="closeAbout()" aria-label="Close">&times;</button>
+            <div class="about-heart">💙</div>
+            <h2>About</h2>
+            <p class="made-line">Beautifully made with <span class="blue-heart">💙</span> by</p>
+            <div class="author">Mohamed Elba</div>
+            <div class="divider"></div>
+        </div>
+    </div>
+
+    <script>
+        function openAbout() {
+            document.getElementById('aboutModal').classList.add('active');
+        }
+        function closeAbout() {
+            document.getElementById('aboutModal').classList.remove('active');
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeAbout();
+        });
+    </script>
+
+</body>
+</html>
